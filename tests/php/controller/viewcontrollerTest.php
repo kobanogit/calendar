@@ -119,6 +119,11 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			->with('user123', $this->appName, 'firstRun', null)
 			->will($this->returnValue('someFirstRunValue'));
 
+		$this->config->expects($this->at(8))
+			->method('getUserValue')
+			->with('user123', $this->appName, 'timezone', 'automatic')
+			->will($this->returnValue('Australia/Adelaide'));
+
 		$actual = $this->controller->index();
 
 		$this->assertInstanceOf('OCP\AppFramework\Http\TemplateResponse', $actual);
@@ -137,6 +142,7 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			'token' => '',
 			'shareeCanEditShares' => $shareeActions,
 			'shareeCanEditCalendarProperties' => $shareeCanEdit,
+			'timezone' => 'Australia/Adelaide',
 		], $actual->getParams());
 		$this->assertEquals('main', $actual->getTemplateName());
 	}
@@ -208,6 +214,11 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			->with('user123', $this->appName, 'firstRun', null)
 			->will($this->returnValue('someFirstRunValue'));
 
+		$this->config->expects($this->at(8))
+			->method('getUserValue')
+			->with('user123', $this->appName, 'timezone', 'automatic')
+			->will($this->returnValue('Australia/Adelaide'));
+
 		$actual = $this->controller->index();
 
 		$this->assertInstanceOf('OCP\AppFramework\Http\TemplateResponse', $actual);
@@ -225,7 +236,8 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			'token' => '',
 			'shareeCanEditShares' => 'no',
 			'shareeCanEditCalendarProperties' => 'yes',
-			'canSharePublicLink' => 'no'
+			'canSharePublicLink' => 'no',
+			'timezone' => 'Australia/Adelaide',
 		], $actual->getParams());
 		$this->assertEquals('main', $actual->getTemplateName());
 	}
@@ -295,6 +307,16 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			$this->config->expects($this->at(8))
 				->method('setUserValue')
 				->with('user123');
+
+			$this->config->expects($this->at(9))
+				->method('getUserValue')
+				->with('user123', $this->appName, 'timezone', 'automatic')
+				->will($this->returnValue('Australia/Adelaide'));
+		} else {
+			$this->config->expects($this->at(8))
+				->method('getUserValue')
+				->with('user123', $this->appName, 'timezone', 'automatic')
+				->will($this->returnValue('Australia/Adelaide'));
 		}
 
 		$actual = $this->controller->index();
@@ -314,7 +336,8 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			'token' => '',
 			'shareeCanEditShares' => 'yes',
 			'shareeCanEditCalendarProperties' => 'no',
-			'canSharePublicLink' => 'no'
+			'canSharePublicLink' => 'no',
+			'timezone' => 'Australia/Adelaide',
 		], $actual->getParams());
 		$this->assertEquals('main', $actual->getTemplateName());
 	}
@@ -413,6 +436,7 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			'shareeCanEditShares' => $shareeActions,
 			'shareeCanEditCalendarProperties' => $shareeCanEdit,
 			'canSharePublicLink' => 'no',
+			'timezone' => 'automatic',
 		], $actual->getParams());
 		$this->assertEquals('main', $actual->getTemplateName());
 	}
@@ -504,6 +528,7 @@ class ViewControllerTest extends \PHPUnit_Framework_TestCase {
 			'shareeCanEditShares' => $shareeActions,
 			'shareeCanEditCalendarProperties' => $shareeCanEdit,
 			'canSharePublicLink' => 'no',
+			'timezone' => 'automatic',
 		], $actual->getParams());
 		$this->assertEquals('public', $actual->getTemplateName());
 	}
